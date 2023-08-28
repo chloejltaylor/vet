@@ -1,6 +1,4 @@
 import Phaser from '../lib/phaser.js'
-import game from './game.js'
-
 
 export default class Bonus extends Phaser.Scene
 {
@@ -9,40 +7,42 @@ export default class Bonus extends Phaser.Scene
     super('bonus')
     }
 
-    // Time needed for onboarding
+    counter
 
-    onboardingtime = 6000
+
     numHamstersCaught = 0
     currentTargetX = 700
-    currentTargetY = 480
+    currentTargetY = 450
     startItemsArray = [
-        {x: 150, y:250},
-        {x: 350, y:500},
-        {x: 200, y:700},
-        {x: 600, y:240},
-        {x: 1250, y:250},
-        {x: 1050, y:500},
-        {x: 1200, y:700},
-        {x: 800, y:240},
+        {x: 600, y:420},
+        {x: 350, y:580},
+        {x: 260, y:620},
+        {x: 220, y:700},
+        {x: 800, y:420},
+        {x: 1050, y:580},
+        {x: 1140, y:620},
+        {x: 420, y:320},
     ]
     endItemsArray = [
-        {x: 600, y:400},
-        {x: 650, y:400},
-        {x: 700, y:400},
-        {x: 750, y:400},
-        {x: 800, y:400},
-        {x: 650, y:350},
-        {x: 700, y:350},
-        {x: 750, y:350},
+        {x: 550, y:550},
+        {x: 625, y:550},
+        {x: 700, y:550},
+        {x: 775, y:550},
+        {x: 850, y:550},
+        {x: 600, y:500},
+        {x: 700, y:500},
+        {x: 800, y:500},
     ]
-    barrier1Pos={x:700, y:600}
-    barrier2Pos={x:700, y:450}
-    barrier3Pos={x:700, y:300}
-    barrier4Pos={x:700, y:500}
-    barrier5Pos={x:700, y:220}
+    barrier1Pos={x:700, y:420}
+    barrier2Pos={x:700, y:500}
+    barrier3Pos={x:700, y:560}
+    barrier4Pos={x:700, y:620}
+    barrier5Pos={x:700, y:660}
+    barrier6Pos={x:300, y:750}
+    barrier7Pos={x:700, y:240}
     
-    hamsterArray=['hamster1', 'hamster2','hamster3','hamster4','hamster5','hamster6','hamster7', 'hamster8']
-    hamsterDelay = 4000
+
+    hamsterDelay = 1000
     hamsterCaught = false
     hamsterState = ['hidden', 'revealed', 'grabbed']
 
@@ -55,23 +55,26 @@ export default class Bonus extends Phaser.Scene
 
         this.onboardingTimer = this.time.delayedCall(800, this.onboardingAnim, [], this)
 
+        
         let marginX = 150
         let marginY = 300
         //Position static images
-        this.add.image(700, 450, 'background')
-        this.countingtext = this.add.text(700, 70, '0', {fontSize: 100}).setOrigin(0.5).setDepth(1)
+        this.add.image(700, 450, 'backgroundBonus')
+        this.counter = this.add.image(700, 100, 'spritesheet_bonus', 'counter.png')
 
-        this.hitzone = this.add.image(this.currentTargetX, this.currentTargetY, 'hamsterhitzone').setDepth(21)
+        this.countingtext = this.add.text(750, 100, '0', {fontSize: 100, color: 'black'}).setOrigin(0.5).setDepth(1)
+        this.add.image(this.currentTargetX, this.currentTargetY, 'spritesheet_bonus', 'cage_back.png').setDepth(11)
+        this.hitzone = this.add.image(this.currentTargetX, this.currentTargetY, 'spritesheet_bonus', 'cage_front.png').setDepth(100)
 
         this.hamsters = this.physics.add.group()
-        this.hamster1 = this.hamsters.create(this.startItemsArray[0].x, this.startItemsArray[0].y, this.hamsterArray[0]).setInteractive({ draggable: true }).setDepth(2)
-        this.hamster2 = this.hamsters.create(this.startItemsArray[1].x, this.startItemsArray[1].y, this.hamsterArray[1]).setInteractive({ draggable: true }).setDepth(4)
-        this.hamster3 = this.hamsters.create(this.startItemsArray[2].x, this.startItemsArray[2].y, this.hamsterArray[2]).setInteractive({ draggable: true }).setDepth(6)
-        this.hamster4 = this.hamsters.create(this.startItemsArray[3].x, this.startItemsArray[3].y, this.hamsterArray[3]).setInteractive({ draggable: true }).setDepth(0)
-        this.hamster5 = this.hamsters.create(this.startItemsArray[4].x, this.startItemsArray[4].y, this.hamsterArray[4]).setInteractive({ draggable: true }).setDepth(2)
-        this.hamster6 = this.hamsters.create(this.startItemsArray[5].x, this.startItemsArray[5].y, this.hamsterArray[5]).setInteractive({ draggable: true }).setDepth(4)
-        this.hamster7 = this.hamsters.create(this.startItemsArray[6].x, this.startItemsArray[6].y, this.hamsterArray[6]).setInteractive({ draggable: true }).setDepth(6)
-        this.hamster8 = this.hamsters.create(this.startItemsArray[7].x, this.startItemsArray[7].y, this.hamsterArray[7]).setInteractive({ draggable: true }).setDepth(0)
+        this.hamster1 = this.hamsters.create(this.startItemsArray[0].x, this.startItemsArray[0].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(2)
+        this.hamster2 = this.hamsters.create(this.startItemsArray[1].x, this.startItemsArray[1].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(4)
+        this.hamster3 = this.hamsters.create(this.startItemsArray[2].x, this.startItemsArray[2].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(6)
+        this.hamster4 = this.hamsters.create(this.startItemsArray[3].x, this.startItemsArray[3].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(8)
+        this.hamster5 = this.hamsters.create(this.startItemsArray[4].x, this.startItemsArray[4].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(2)
+        this.hamster6 = this.hamsters.create(this.startItemsArray[5].x, this.startItemsArray[5].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(4)
+        this.hamster7 = this.hamsters.create(this.startItemsArray[6].x, this.startItemsArray[6].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(6)
+        this.hamster8 = this.hamsters.create(this.startItemsArray[7].x, this.startItemsArray[7].y, 'spritesheet_bonus', 'hamster.png').setInteractive({ draggable: true }).setDepth(2)
 
         this.hamster1.startX = this.startItemsArray[0].x
         this.hamster1.startY = this.startItemsArray[0].y
@@ -107,13 +110,14 @@ export default class Bonus extends Phaser.Scene
         this.hamster7.state = 'hidden'
         this.hamster8.state = 'hidden'
 
-        this.add.image(this.barrier5Pos.x, this.barrier5Pos.y, 'barrier5').setDepth(1).setScale(0.7)
-        this.add.image(this.barrier4Pos.x, this.barrier4Pos.y, 'barrier4').setDepth(8)
-        this.add.image(this.barrier3Pos.x, this.barrier3Pos.y, 'barrier3').setDepth(3)
-        this.add.image(this.barrier2Pos.x, this.barrier2Pos.y, 'barrier2').setDepth(5)
-        this.add.image(this.barrier1Pos.x, this.barrier1Pos.y, 'barrier1').setDepth(7)
+        this.add.image(this.barrier5Pos.x, this.barrier5Pos.y, 'spritesheet_bonus', 'table.png').setDepth(1)
+        this.add.image(this.barrier4Pos.x, this.barrier4Pos.y, 'spritesheet_bonus', 'chairs_01.png').setDepth(9)
+        this.add.image(this.barrier3Pos.x, this.barrier3Pos.y, 'spritesheet_bonus', 'chairs_02.png').setDepth(7)
+        this.add.image(this.barrier2Pos.x, this.barrier2Pos.y, 'spritesheet_bonus', 'chairs_03.png').setDepth(5)
+        this.add.image(this.barrier1Pos.x, this.barrier1Pos.y, 'spritesheet_bonus', 'desk.png').setDepth(3)
+        this.add.image(this.barrier6Pos.x, this.barrier6Pos.y, 'spritesheet_bonus', 'plant_pot.png').setDepth(11)
+        this.add.image(this.barrier7Pos.x, this.barrier7Pos.y, 'spritesheet_bonus', 'desk_props.png').setDepth(3)
         
-
 
             this.time.addEvent({
                 delay: this.hamsterDelay,   
@@ -127,6 +131,7 @@ export default class Bonus extends Phaser.Scene
                     if(this.hamster6.state=='hidden'){this.hamsterPopOut(this.hamster6, this.startItemsArray[5].y)}
                     if(this.hamster7.state=='hidden'){this.hamsterPopOut(this.hamster7, this.startItemsArray[6].y)}
                     if(this.hamster8.state=='hidden'){this.hamsterPopOut(this.hamster8, this.startItemsArray[7].y)}
+
                },   
                 callbackScope: this,
                 loop: true
@@ -157,10 +162,13 @@ export default class Bonus extends Phaser.Scene
             if ((x < this.currentTargetX+marginX && x > this.currentTargetX-marginX) && (y < this.currentTargetY+marginY && y > this.currentTargetY-marginY))
             {
                 this.numHamstersCaught++
+                if(this.numHamstersCaught==4){
+                    // this.moreHamsters()
+                }
                 this.countingtext.text = this.numHamstersCaught
                 this.sound.play('correct')
                 gameObject.state='caught'
-                gameObject.setScale(0.6).setDepth(20-this.numHamstersCaught)
+                gameObject.setScale(0.8).setDepth(20-this.numHamstersCaught)
                 gameObject.x=this.endItemsArray[this.numHamstersCaught-1].x
                 gameObject.y=this.endItemsArray[this.numHamstersCaught-1].y
                 if(this.numHamstersCaught == 8) {
@@ -191,9 +199,9 @@ export default class Bonus extends Phaser.Scene
             })
 
             // Onboarding
-            this.onboardingHamster = this.add.image(this.startItemsArray[2].x, this.startItemsArray[2].y, 'hamster1').setDepth(6)
-            this.onboardingHamster2 = this.add.image(this.startItemsArray[2].x, this.startItemsArray[2].y-150, 'hamster1').setDepth(30).setAlpha(0)
-            this.hand = this.add.spine(this.startItemsArray[2].x, this.startItemsArray[2].y-200, 'hand').setDepth(30).setAlpha(0)
+            this.onboardingHamster = this.add.image(this.startItemsArray[2].x, this.startItemsArray[2].y, 'spritesheet_bonus', 'hamster.png').setDepth(6)
+            this.onboardingHamster2 = this.add.image(this.startItemsArray[2].x, this.startItemsArray[2].y-75, 'spritesheet_bonus', 'hamster.png').setDepth(30).setAlpha(0)
+            this.hand = this.add.spine(this.startItemsArray[2].x, this.startItemsArray[2].y-100, 'hand').setDepth(30).setAlpha(0)
 
             this.handanims = this.hand.getAnimationList()
 
@@ -206,7 +214,7 @@ export default class Bonus extends Phaser.Scene
                         targets: [hamster],
                         tweens: [
                             {
-                                y: currentY - 150,
+                                y: currentY - 100,
                                 ease: 'Sine.easeInOut',
                                 duration: 400
                             }
@@ -235,22 +243,23 @@ export default class Bonus extends Phaser.Scene
         }
 
         hamsterPopOut(hamster, currentY){
-            this.time.delayedCall(Phaser.Math.Between(8000, 12000)  , pop, [], this)
+            this.time.delayedCall(Phaser.Math.Between(6000, 12000)  , pop, [], this)
             function pop(){
                 console.log("hamsterPopOut")
                 this.hamsterReveal(hamster, currentY)
                 if (hamster.hamsterState!='caught'){
                     this.time.delayedCall(3000, hide, [], this)
                     function hide() {
-                        if(hamster.hamsterState!='caught'){
-                        
                         this.hamsterHide(hamster, currentY)
-                        }
                     }
                 }
             }
 
         }
+
+        // moreHamsters(){
+
+        // }
 
 
 
@@ -274,7 +283,7 @@ export default class Bonus extends Phaser.Scene
                         duration: 0
                     },
                     {
-                        y: this.startItemsArray[2].y-150,
+                        y: this.startItemsArray[2].y-75,
                         ease: 'Sine.easeInOut',
                         duration: 1500
                     },

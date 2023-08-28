@@ -8,459 +8,381 @@ export default class game extends Phaser.Scene
     super('game')
     }
 
-    //amoutn to scroll by
+    background
 
-    ScrollFactor = 100
-    
+    dropZoneAnimal
+    dropZoneTweezers
+    dropZoneFleas
+    dropZoneBandage
 
-    // Time needed for onboarding
-
-    onboardingtime = 5000
+    onboardingtime = 0
 
     // Starting positions of the draggables
-    startItemX = 700
-    startItemY = 750
-    itemsArray1 = ['item1_1','item1_2', 'item1_3', 'item1_4']
-    itemsArray2 = ['item2_1','item2_2', 'item2_3', 'item2_4', 'item2_5','item2_6']
-    itemsArray3 = ['item3_1','item3_2', 'item3_3', 'item3_4', 'item3_5','item3_6','item3_7','item3_8']
-    itemsArray = [this.itemsArray1, this.itemsArray2, this.itemsArray3]
+    startItem1X = 500
+    startItem1Y = 800
+    startItem2X = 700
+    startItem2Y = 800
+    startItem3X = 900
+    startItem3Y = 800
 
-    currentTargetX
-    currentTargetY
+    icon1
+    icon2
+    icon3
+    tool1
+    tool2
+    tool3
+    
+    vet
+    table
+    thorn
 
-    scrollDistance = 100
-    scrollOfset = 0
+    animalsSadArray = ['dog_01.png', 'cat_01.png', 'rabbit_01.png']
+    animalsXrayArray = ['diagnostic_xray_dog.png', 'diagnostic_xray_cat.png', 'diagnostic_xray_rabbit.png']
+    animalsMagArray = ['diagnostic_mag_glass_dog.png', 'diagnostic_mag_glass_cat.png', 'diagnostic_mag_glass_rabbit.png']
+    animalsMediumArray = ['dog_01.png', 'diagnostic_xray_cat.png', 'rabbit_02.png']
+    animalsHappyArray = ['dog_02.png', 'cat_02.png', 'rabbit_03.png']
+    diagnosisArray = ['mag', 'xray', 'exam']
+    treatArray = ['flea', 'bandage', 'tweezers']
+    iconArray = ['icon_diagnostic_examine.png', 'icon_diagnostic_xray.png','icon_diagnostic_mag_glass.png']
+    toolsArray = ['icon_treatment_flea.png', 'icon_treatment_bandage.png','icon_treatment_tweezers.png']
+    backgroundArray = ['dogzoom', 'catzoom', 'rabbitzoom']
 
-    // LEVEL 1
-    // HOUSES
-    target1_1posX = 200
-    target1_1posY = 350
-    target1_2posX = 550
-    target1_2posY = 350
-    target1_3posX = 900
-    target1_3posY = 350
-    target1_4posX = 1250
-    target1_4posY = 350
-    allTargets1
+    tick
+    hex1
+    hex2
+    circle1
+    circle2
+    circle3
+    circle4
+    hexBig
+    circleBig1
+    circleBig2
+    circleBigBandage
+    circleBigFleas
+    circleBigTweezers
 
-     //End positions
-    end1_1posX = 200
-    end1_1posY = 250
-    end1_2posX = 550
-    end1_2posY = 250
-    end1_3posX = 900
-    end1_3posY = 250
-    end1_4posX = 1250
-    end1_4posY = 250
-    allEndPositions1
+    bandage1
+    bandage2
+    bandage3
 
-    //LEVEL 2
-    // HOUSES
-    target2_1posX = 200
-    target2_1posY = 350
-    target2_2posX = 450
-    target2_2posY = 350
-    target2_3posX = 600
-    target2_3posY = 350
-    target2_4posX = 900
-    target2_4posY = 350
-    target2_5posX = 1150
-    target2_5posY = 350   
-    target2_6posX = 1300
-    target2_6posY = 350 
-    allTargets2
+    animalState = 'justArrived'
+    currentAnimalX = 700
+    currentAnimalY = 350
+    animalNumber
+    animalX =700
+    animalY = 350
+    onboardingItem
 
-    //END POSITIONS
-    end2_1posX = 200
-    end2_1posY = 350
-    end2_2posX = 450
-    end2_2posY = 350
-    end2_3posX = 600
-    end2_3posY = 350
-    end2_4posX = 900
-    end2_4posY = 350
-    end2_5posX = 1150
-    end2_5posY = 350   
-    end2_6posX = 1300
-    end2_6posY = 350
-    allEndPositions2
+    charanims
 
-        //LEVEL 3
-    // HOUSES
-    target3_1posX = 0
-    target3_1posY = 350
-    target3_2posX = 150
-    target3_2posY = 350
-    target3_3posX = 400
-    target3_3posY = 350
-    target3_4posX = 650
-    target3_4posY = 350
-    target3_5posX = 800
-    target3_5posY = 350   
-    target3_6posX = 1050
-    target3_6posY = 280
-    target3_7posX = 1050
-    target3_7posY = 480
-    target3_8posX = 1300
-    target3_8posY = 350 
-    allTargets3
-
-    //END POSITIONS
-    end3_1posX = 0
-    end3_1posY = 350
-    end3_2posX = 150
-    end3_2posY = 350
-    end3_3posX = 400
-    end3_3posY = 350
-    end3_4posX = 650
-    end3_4posY = 350
-    end3_5posX = 800
-    end3_5posY = 350   
-    end3_6posX = 1050
-    end3_6posY = 280
-    end3_7posX = 1050
-    end3_7posY = 480
-    end3_8posX = 1300
-    end3_8posY = 350
-    allEndPositions3
-
-    //next letter
-    nextLetter = 0
-
-    //array of counters
-    letterCounters1 = ['letterCounter1_0-4', 'letterCounter1_1-4', 'letterCounter1_2-4', 'letterCounter1_3-4', 'letterCounter1_4-4']
-    letterCounters2 = ['letterCounter2_0-6', 'letterCounter2_1-6', 'letterCounter2_2-6', 'letterCounter2_3-6', 'letterCounter2_4-6', 'letterCounter2_5-6', 'letterCounter2_6-6']
-    letterCounters3 = ['letterCounter3_0-8', 'letterCounter3_1-8', 'letterCounter3_2-8', 'letterCounter3_3-8', 'letterCounter3_4-8', 'letterCounter3_5-8', 'letterCounter3_6-8', 'letterCounter3_7-8', 'letterCounter3_8-8']
-
-    letterCounters = [this.letterCounters1, this.letterCounters2, this.letterCounters3]
-
-    preload()
-    {
-    }
 
     init(data){
-        this.level=data.level
-        this.firstLevel=data.firstLevel
-        this.nextLetter=0
+        this.parcelNum = 0
+        this.animalState = 'justArrived'
+        // this.animalNumber=2
+        this.animalNumber = data.level
+        this.firstLevel = data.firstLevel
+        this.onboardingtime = 0
     }
 
     create()
     {
 
 
-        // mix up letter order
-        function shuffle(array) {
-            array.sort(() => Math.random() - 0.5);
-          }
 
-
-        // mix up numbers 
-        if(this.level==0){this.orderofletters = [0,1,2,3]}
-        else if(this.level==1){this.orderofletters = [0,1,2,3,4,5]}
-        if(this.level==2){this.orderofletters = [0,1,2,3,4,5,6,7]}
-        shuffle(this.orderofletters)
-        console.log(this.orderofletters)
-        if(this.firstLevel){
-            this.onboardingTimer = this.time.delayedCall(800, this.onboardingAnim, [], this)
-
-        }
-    
-
-
-        // Coordinates of the drop zones
-        this.allTargets1 = [[this.target1_1posX,this.target1_1posY], [this.target1_2posX,this.target1_2posY], [this.target1_3posX, this.target1_3posY], [this.target1_4posX,this.target1_4posY]]
-        this.allTargets2 = [[this.target2_1posX,this.target2_1posY], [this.target2_2posX,this.target2_2posY], [this.target2_3posX, this.target2_3posY], [this.target2_4posX,this.target2_4posY],[this.target2_5posX,this.target2_5posY], [this.target2_6posX,this.target2_6posY]]
-        this.allTargets3 = [[this.target3_1posX,this.target3_1posY], [this.target3_2posX,this.target3_2posY], [this.target3_3posX, this.target3_3posY], [this.target3_4posX,this.target3_4posY], [this.target3_5posX,this.target3_5posY], [this.target3_6posX,this.target3_6posY], [this.target3_7posX,this.target3_7posY], [this.target3_8posX,this.target3_8posY]]
-        this.alltargets = [this.allTargets1, this.allTargets2, this.allTargets3]
-
-        // Coordinates of the end positions
-        this.allEndPositions1 = [[this.end1_1posX, this.end1_1posY], [this.end1_2posX, this.end1_2posY], [this.end1_3posX, this.end1_3posY], [this.end1_4posX, this.end1_4posY]]
-        this.allEndPositions2 = [[this.end2_1posX, this.end2_1posY], [this.end2_2posX, this.end2_2posY], [this.end2_3posX, this.end2_3posY], [this.end2_4posX, this.end2_4posY], [this.end2_5posX, this.end2_5posY], [this.end2_6posX, this.end2_6posY]]
-        this.allEndPositions3 = [[this.end3_1posX, this.end3_1posY], [this.end3_2posX, this.end3_2posY], [this.end3_3posX, this.end3_3posY], [this.end3_4posX, this.end3_4posY], [this.end3_5posX, this.end2_5posY], [this.end3_6posX, this.end3_6posY], [this.end3_7posX, this.end3_7posY], [this.end3_8posX, this.end3_8posY]]
+        this.tick = this.add.image(1000, 350, 'spritesheet-key', 'indicator_tick.png').setDepth(5).setAlpha(0)
+        this.circle1 = this.add.image(860, 550, 'spritesheet-key', 'indicator_circle.png').setDepth(5).setAlpha(0)
+        this.circle2 = this.add.image(600, 150, 'spritesheet-key', 'indicator_circle.png').setDepth(5).setAlpha(0)
+        this.circle3 = this.add.image(730, 350, 'spritesheet-key', 'indicator_circle.png').setDepth(5).setAlpha(0)
+        this.circle4 = this.add.image(600, 550, 'spritesheet-key', 'indicator_circle.png').setDepth(5).setAlpha(0)
+        this.circleBig1 = this.add.image(800, 400, 'spritesheet-key', 'indicator_circle_big.png').setDepth(5).setAlpha(0)
+        this.circleBig2 = this.add.image(650, 450, 'spritesheet-key', 'indicator_circle_big.png').setDepth(5).setAlpha(0)
+        this.circleBigFleas = this.add.image(800, 400, 'spritesheet-key', 'indicator_circle_big.png').setDepth(5).setAlpha(0)
+        this.circleBigBandage = this.add.image(650, 450, 'spritesheet-key', 'indicator_circle_big.png').setDepth(5).setAlpha(0)
+        this.circleBigTweezers = this.add.image(720, 380, 'spritesheet-key', 'indicator_circle_big.png').setDepth(5).setAlpha(0)
 
         
-        this.allEndPositions = [this.allEndPositions1, this.allEndPositions2, this.allEndPositions3]
+        this.bandage1 = this.add.image(700, 370, 'spritesheet-diag', 'treatment_bandage_01.png').setDepth(5).setAlpha(0)
+        this.bandage2 = this.add.image(700, 370, 'spritesheet-diag', 'treatment_bandage_02.png').setDepth(5).setAlpha(0)
+        this.bandage3 = this.add.image(700, 370, 'spritesheet-diag', 'treatment_bandage_03.png').setDepth(5).setAlpha(0)
+        this.hex1 = this.add.image(720, 340, 'spritesheet-key', 'indicator_hex_big.png').setDepth(5).setAlpha(0)
+        this.hex2 = this.add.image(630, 550, 'spritesheet-key', 'indicator_hex.png').setDepth(5).setAlpha(0)
+        this.thorn = this.add.image(735, 335, 'spritesheet-diag', 'treatment_thorn.png').setDepth(5).setAlpha(0)
 
 
-
-        // Space around drop zone that is accepted
-        let marginX = 150
-        let marginY = 300
-
-
-        //Position images
-        this.add.image(700, 450, 'background')
-        this.letterCounterImage = this.add.image(900, 800, this.letterCounters[this.level][0]).setScrollFactor(0)
-
-
-
-        //  Create a 'drop zone'
-        if(this.level==0){
-            this.target1 = this.physics.add.image(this.target1_1posX, this.target1_1posY, 'house1_1').setScale(0.7)
-            this.target2 = this.add.image(this.target1_2posX, this.target1_2posY, 'house1_2').setScale(0.7)
-            this.target3 = this.add.image(this.target1_3posX, this.target1_3posY, 'house1_3').setScale(0.7)
-            this.target4 = this.add.image(this.target1_4posX, this.target1_4posY, 'house1_4').setScale(0.7)
-        } else if(this.level==1) {
-            this.target1 = this.add.image(this.target2_1posX, this.target2_1posY, 'house2_1').setScale(0.7)
-            this.target2 = this.add.image(this.target2_2posX, this.target2_2posY, 'house2_2').setScale(0.7)
-            this.target3 = this.add.image(this.target2_3posX, this.target2_3posY, 'house2_3').setScale(0.7)
-            this.target4 = this.add.image(this.target2_4posX, this.target2_4posY, 'house2_4').setScale(0.7)
-            this.target5 = this.add.image(this.target2_5posX, this.target2_5posY, 'house2_5').setScale(0.7)
-            this.target6 = this.add.image(this.target2_6posX, this.target2_6posY, 'house2_6').setScale(0.7)
-        } else if(this.level==2) {
-            this.target1 = this.add.image(this.target3_1posX, this.target3_1posY, 'house3_1').setScale(0.7)
-            this.target2 = this.add.image(this.target3_2posX, this.target3_2posY, 'house3_2').setScale(0.7)
-            this.target3 = this.add.image(this.target3_3posX, this.target3_3posY, 'house3_3').setScale(0.7)
-            this.target4 = this.add.image(this.target3_4posX, this.target3_4posY, 'house3_4').setScale(0.7)
-            this.target5 = this.add.image(this.target3_5posX, this.target3_5posY, 'house3_5').setScale(0.7)
-            this.target6 = this.add.image(this.target3_6posX, this.target3_6posY, 'house3_6').setScale(0.7)
-            this.target7 = this.add.image(this.target3_7posX, this.target3_7posY, 'house3_7').setScale(0.7)
-            this.target8 = this.add.image(this.target3_8posX, this.target3_8posY, 'house3_8').setScale(0.7)
-        }
-
-
-       
-
-        // Place draggables
-        
-        this.items = this.physics.add.group()
-        if(this.firstLevel){
-            this.onboardingTimer = this.time.delayedCall(this.onboardingtime, dispenseItem, [], this)
-        } else {
-            this.onboardingTimer = this.time.delayedCall(1000, dispenseItem, [], this)
-        }
-
-        function dispenseItem() {
-            this.item = this.items.create(this.startItemX, this.startItemY, this.itemsArray[this.level][this.orderofletters[this.nextLetter]]).setInteractive({ draggable: true }).setScrollFactor(0)
             
-            // this.item = this.item1.body
-            this.item.letterNumber = this.nextLetter
-
-            //Find out which bin it should go in
-        this.matchLetterWithHouse(this.item)
+        // start the onboarding animation 
+        if(this.firstLevel){
+            this.onboardingtime = 5500
+            this.onboardingTimer = this.time.delayedCall(800, this.onboardingAnim, [], this)
         }
 
+
+        //Position static images
+        this.background = this.add.image(700, 450, 'background')
+        this.vet = this.add.spine(1100, 650, 'vet').setScale(4,4)
+        this.vet.setInteractive()
+        this.charanims = this.vet.getAnimationList()
+        this.table = this.add.image(700, 750, 'spritesheet-key', 'table.png')
         
 
+        this.dock = this.add.image(700, 800,  'spritesheet-key', 'dock.png')
+        this.animal = this.add.image(this.animalX,this.animalY, 'spritesheet-key', this.animalsSadArray[this.animalNumber])
+        this.animal.correctDiagnostic = this.diagnosisArray[this.animalNumber]
+        this.animal.correctTool= this.treatArray[this.animalNumber]
+        this.animal.beingXrayed = false
+
+
+        this.dropZoneAnimal = new Phaser.Geom.Rectangle(
+            this.animal.x - this.animal.displayWidth / 2,
+            this.animal.y - this.animal.displayHeight / 2,
+            this.animal.displayWidth,
+            this.animal.displayHeight
+            )
+
+        this.dropZoneFleas = new Phaser.Geom.Rectangle(
+            this.circleBigFleas.x - this.circleBigFleas.displayWidth / 2,
+            this.circleBigFleas.y - this.circleBigFleas.displayHeight / 2,
+            this.circleBigFleas.displayWidth,
+            this.circleBigFleas.displayHeight
+            )
         
-        //initialise the number correct
-        this.numcorrect = 0
+        this.dropZoneTweezers = new Phaser.Geom.Rectangle(
+            this.circleBig2.x - this.circleBig2.displayWidth / 2,
+            this.circleBig2.y - this.circleBig2.displayHeight / 2,
+            this.circleBig2.displayWidth,
+            this.circleBig2.displayHeight
+            )
+    
+        this.dropZoneBandage = new Phaser.Geom.Rectangle(
+            this.circleBigBandage.x - this.circleBigBandage.displayWidth / 2,
+            this.circleBigBandage.y - this.circleBigBandage.displayHeight / 2,
+            this.circleBigBandage.displayWidth,
+            this.circleBigBandage.displayHeight
+            )
 
 
-        // Move the draggable with the pointer
+    
+            
+        // When the draggable is being dragged...
+
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+            let x = gameObject.x = dragX
+            let y = gameObject.y = dragY
+
+            if(gameObject.equipment=='exam'){
+                gameObject.setTexture('spritesheet-diag', 'diagnostic_examine.png')
+                    if(this.scene.animalNumber==0){
+                        this.scene.appearCircle(this.scene.circle1)
+                        this.scene.appearCircle(this.scene.circle2)
+                    } else if(this.scene.animalNumber==1){
+                        this.scene.appearCircle(this.scene.circle3)
+                        this.scene.appearCircle(this.scene.circle4)
+                    } else if(this.scene.animalNumber==2){
+                        this.scene.appearCircle(this.scene.circle1)
+                        this.scene.appearCircle(this.scene.circle2)
+                        this.scene.appearCircle(this.scene.circle3)
+                        this.scene.appearCircle(this.scene.circle4)
+                    } 
+
+            }
+            if(gameObject.equipment=='xray'){
+                gameObject.setTexture('spritesheet-diag2', 'diagnostic_xray_screen.png')
+                this.scene.xrayAnimal()
+            }
+            if(gameObject.equipment=='mag'){
+                gameObject.setScale(2)
+            }
+            if(gameObject.tool=='flea'){
+                gameObject.setTexture('spritesheet-diag', 'treatment_flea_hand.png')
+                if(this.scene.animalNumber==0){
+                    console.log("show circle")
+                    this.scene.appearCircle(this.scene.circleBigFleas
+                 )}
+            }
+            if(gameObject.tool=='tweezers'){
+                if(this.scene.animalNumber==2){
+                this.scene.appearCircle(this.scene.circleBigTweezers)
+                }
+                gameObject.setTexture('spritesheet-diag', 'treatment_tweezers.png')
+            }
+            if(gameObject.tool=='bandage'){
+                if(this.scene.animalNumber==1){
+                    this.scene.appearCircle(this.scene.circleBigBandage)
+                }
+                gameObject.setTexture('spritesheet-diag', 'treatment_bandage_hand_01.png').setAngle(45)
+            }
+
+
+
         })
 
-        this.physics.add.overlap(this.target1, this.item);
+        // When the draggable is being released...
 
-                this.input.on('dragend', (pointer, gameObject) => {
+        this.input.on('dragend', (pointer, gameObject) => {
 
-                    const touching = this.atari.body.touching
-                    console.log("touching:")
-                    console.log(touching)
+        this.setCircleDropZones()
+
+      // DEFINE DROP ZONES
+
+          
+        const inDropZoneAnimal = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneAnimal
+        )
+
+        const inDropZoneTweezers = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneTweezers
+        )
+
+        const inDropZoneFleas = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneFleas
+        )
+
+        const inDropZoneBandage = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneTweezers
+        )
+
+        const inDropZoneCircle1 = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneCircle1
+        )
+
+        const inDropZoneCircle2 = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneCircle2
+        )
+
+        const inDropZoneCircle3 = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneCircle3
+        )
+
+        const inDropZoneCircle4 = Phaser.Geom.Intersects.RectangleToRectangle(
+            gameObject.getBounds(),
+            this.dropZoneCircle4
+        )
+        // note where the draggable has been released
+        const x = gameObject.x
+        const y = gameObject.y
 
 
-                })
+            // NOTE IF IT IS THE CORRECT DROP ZONE FOR THE GAME OBJECT
+        let correctDropZoneObject
+        if(gameObject.equipment == 'exam') {correctDropZoneObject= inDropZoneCircle4}
+        if(gameObject.equipment == 'xray') {correctDropZoneObject= inDropZoneAnimal}
+        if(gameObject.equipment == 'mag') {correctDropZoneObject= inDropZoneAnimal}
+        if(gameObject.tool == 'flea') {correctDropZoneObject= inDropZoneFleas}
+        if(gameObject.tool == 'bandage') {correctDropZoneObject= inDropZoneBandage}
+        if(gameObject.tool == 'tweezers') {correctDropZoneObject= inDropZoneTweezers}
 
-                this.atari = this.physics.add.image(400, 300, 'arrow-left').setInteractive({ draggable: true })
-        // this.atari.body.setAllowGravity(false);
-        this.atari.body.setImmovable(true);
+            // NOTE IF IT IS THE CORRECT OBJECT FOR THE ANIMAL
+        let correctEquipment
+        let correctTool
+        if(this.animalNumber==0) {correctEquipment='mag'}  //diagnose dog
+        if(this.animalNumber==0) {correctTool='flea'}   //treat dog
+        if(this.animalNumber==1) {correctEquipment='xray'}  //diagnose cat
+        if(this.animalNumber==1) {correctTool='bandage'}    //treat cat
+        if(this.animalNumber==2) {correctEquipment='exam'} //diagnose rabbit
+        if(this.animalNumber==2) {correctTool='tweezers'}  // treat rabbit
 
-        this.block = this.physics.add.image(700, 500, 'arrow-right');
-        this.block.setVelocity(200, 200);
-        // this.block.setBounce(1, 1);
-        this.block.setCollideWorldBounds(true);
 
+            // HANDLE CIRCLES 
         
+        if(
+            (gameObject.equipment == 'exam')
+            &&
+            (inDropZoneCircle1 || inDropZoneCircle2 || inDropZoneCircle3)
+            &&
+            inDropZoneAnimal
+            ) 
+            {
+            console.log("wrong circle")
+            this.handleDropZoneIncorrect(gameObject, x, y)
+            this.resetafterIncorrect(gameObject)
+
+        }
+        
+        else
+
+                    // IF ITEM IS NOT DROPPED IN THE DROP ZONE, MAKE IT DISAPPEAR AND RESET ITEMS
+
+        if(!correctDropZoneObject)
+        {
+            console.log("missed target")
+             this.disappear(gameObject)
+             this.resetafterIncorrect(gameObject)
+            }
+        // ELSE IF ITEM IS DROPPED IN THE DROP ZONE but IS THE INCORRECT ITEM FOR THAT ANIMAL, REACT ACCORDINGLY AND RESET
+
+        else             
+
+        if
+        (
+            correctDropZoneObject && (gameObject.equipment != correctEquipment && gameObject.tool != correctTool)
+        )
+        {
+            console.log("wrong item")
+            this.handleDropZoneIncorrect(gameObject, x, y)
+            this.resetafterIncorrect(gameObject)
+        } 
+
+        // ELSE IF ITEM IS DROPPED IN THE DROP ZONE and IS THE CORRECT ITEM FOR THAT ANIMAL, REACT ACCORDINGLY AND MOVE ON
+     
+        else 
+        {
+            console.log("you got it right")
+            this.moveToNextAnimalState()
+            this.handleDropZoneCorrect(gameObject, x, y)
+        }
 
 
+        })
 
-    
-
-
-        // During a Body vs. Body collision or overlap both become 'touching'.
-        // It's easier to see during an overlap:
-        this.physics.add.overlap(this.atari, this.block);
-
-         //   // this.physics.add.collider(this.items, this.target1, this.handleLetterDrop, undefined, this)
-
-
-        // Release the draggable
-        // this.input.on('dragend', (pointer, gameObject) => {
-
-        //     // note where the draggable has been released
-        //     const x = gameObject.x;
-        //     const y = gameObject.y;
-
-        //     // If the correct draggable is dropped in the drop zone...
-        //     if ((x < this.currentTargetX+this.ScrollFactor*this.scrollOfset+marginX && x > this.currentTargetX-this.ScrollFactor*this.scrollOfset-marginX) && (y < this.currentTargetY+marginY && y > this.currentTargetY-marginY))
-        //     {
-        //         this.sound.play('correct')
-        //         gameObject.disableInteractive()
-        //         this.tweens.add({
-        //             targets: gameObject,
-        //             props: {
-        //                 scale: { value: 0, duration: 1500 },
-        //                 angle: { value: -360, duration: 1500 },
-        //                 alpha: { value: 0, duration: 1500 },
-        //             },
-        //             ease: 'Sine.easeInOut',
-        //         })
-        //         this.time.delayedCall(1000, disappear, [], this)
-
-        //         function disappear(){
-        //             this.physics.world.disableBody(gameObject.body)
-        //             this.items.killAndHide(gameObject)
-        //         }
-        //         gameObject.x = this.currentEndPositionX+this.ScrollFactor*this.scrollOfset
-        //         gameObject.y = this.currentEndPositionY
-        //         this.numcorrect++
-        //         this.nextLetter++
-        //         this.letterCounterImage.setTexture(this.letterCounters[this.level][this.numcorrect])
-        //         if(this.numcorrect==this.itemsArray[this.level].length){
-        //             this.time.delayedCall(2000, this.playTransition, [], this)
-                    
-        //         }
-        //         else{
-        //             this.item = this.items.create(this.startItemX, this.startItemY, this.itemsArray[this.level][this.orderofletters[this.nextLetter]]).setInteractive({ draggable: true }).setScrollFactor(0)
-        //             this.item.letterNumber = this.nextLetter
-        //             this.matchLetterWithHouse(this.item)
-        //         }
-
-
-        //     } 
-        //     else {
-
-        //         this.sound.play('incorrect')
-        //         this.tweens.add({
-        //             targets: gameObject,
-        //             props: {
-        //                 x: { value: this.startItemX, duration: 800 },
-        //                 y: { value: this.startItemY, duration: 800 },
-        //             },
-        //             ease: 'Sine.easeInOut',
-        //         });
-        //     }
-        //     })
-
-        //handleLetterDrop
-
+                    // Place draggables
+        
+        this.items = this.physics.add.group()
+        this.tools = this.physics.add.group()
+        // this.toolsArray = [[this.tool1Correct, this.tool1Wrong1, this.tool1Wrong2]]
+        
+        this.onboardingTimer = this.time.delayedCall(this.onboardingtime, this.dispenseDiagnosticTools, [], this)
 
 
 
                     // Onboarding
-        this.onboardingItem = this.add.image(this.startItemX, this.startItemY, 'item1_1')
-        this.onboardingItem.setAlpha(0)
-        this.hand = this.add.spine(this.startItemX, this.startItemY, 'hand')
+        this.onboardingItem = this.add.image(this.startItem1X, this.startItem1Y, 'spritesheet-key', this.iconArray[0]).setAlpha(0)
+        this.hand = this.add.spine(this.startItem1X, this.startItem1Y-300, 'hand')
         this.handanims = this.hand.getAnimationList()
         this.hand.setAlpha(0)
-
         
-        //scrolling arrows
-        if(this.level==2){
-            this.arrowLeft = this.add.image(100, 350, 'arrow-left').setScrollFactor(0)
-            this.arrowRight = this.add.image(1300, 350, 'arrow-right').setScrollFactor(0)
-            
-            this.arrowLeft.setInteractive().on('pointerdown', pointer =>
-            {
-                this.scroll('left')
-            })
-    
-            this.arrowRight.setInteractive().on('pointerdown', pointer =>
-            {
-                this.scroll('right')
-            })
-        }
 
-
-        this.cameraGuide = this.add.image(700, 450, 'platform')
-        this.cameras.main.startFollow(this.cameraGuide, true)
-        
-    
-        }
-
-        update(){
 
         }
 
-
-        handleLetterDrop(){
-            console.log("Letter dropped")
-        }
-        
-        scroll(direction){
-            if(direction=='right'){
-                console.log('right')
-                this.scrollOfset++
-                this.cameraGuide.x = 450+this.scrollOfset*this.ScrollFactor
-            } else 
-            if(direction=='left'){
-                console.log('left')
-                this.scrollOfset--
-                this.cameraGuide.x = 450+this.scrollOfset*this.ScrollFactor
-            }
-            console.log(this.scrollOfset)
-
-        }
-
-
-        playTransition() {
-           
-            this.gameInProgress = false
-            let continueButton = this.add.image(700, 450, 'continue').setInteractive()
-            this.items.setVelocityX(0)
-            continueButton.once('pointerdown', () => {
-                this.scene.stop()
-                if(this.level==0){
-                    this.scene.start('level1',  {
-                        level: 1,
-                    }) 
-                }
-                else if(this.level==1){
-                    this.scene.start('level1',  {
-                        level: 2,
-                    }) 
-                }
-                else if(this.level==2){
-                    this.scene.start('intro-bonus')
-                }
-                
-            })
-        }
-
-        matchLetterWithHouse(letter) {
-
-            this.currentTargetX=this.alltargets[this.level][this.orderofletters[this.nextLetter]][0]
-            this.currentTargetY=this.alltargets[this.level][this.orderofletters[this.nextLetter]][1]
-            this.currentEndPositionX=this.allEndPositions[this.level][this.orderofletters[this.nextLetter]][0]
-            this.currentEndPositionY=this.allEndPositions[this.level][this.orderofletters[this.nextLetter]][1]
-            
-
-            
-        }
 
         onboardingAnim() {
+            
             this.hand.play(this.handanims[1], false)
             this.tweens.chain({
                 targets: [this.hand, this.onboardingItem],
                 tweens: [
                     {
-                        x: this.startItemX,
                         alpha: 1,
                         ease: 'Sine.easeInOut',
                         duration: 200
                     },
                     {
-                        x: this.startItemX,
-                        y: this.startItemY,
+
+                        y: this.startItem1Y,
                         ease: 'Sine.easeInOut',
-                        duration: 500
+                        duration: 1000
                     },
                     {
-                        x: this.end1_1posX,
-                        y: this.end1_1posY,
+                        x: this.currentAnimalX,
+                        y: this.currentAnimalY,
                         ease: 'Sine.easeInOut',
                         duration: 2000
                     },
@@ -476,4 +398,646 @@ export default class game extends Phaser.Scene
         }
 
 
+        dispenseTools()
+        {
+            this.background.setTexture(this.backgroundArray[this.animalNumber])
+            this.table.setAlpha(0)
+            this.animal.setAlpha(0).setDepth(1)
+            this.vet.setAlpha(0)
+            this.removeEquipment()
+            if(this.animalNumber==2){this.thorn.setAlpha(1)}
+            this.tool1 = this.items.create(this.startItem1X, this.startItem1Y, 'spritesheet-key', this.toolsArray[0]).setInteractive({ draggable: true }).setDepth(1)
+            this.tool1.startX = this.startItem1X
+            this.tool1.startY = this.startItem1Y
+            this.tool1.tool = 'flea'
+
+            this.tool2 = this.items.create(this.startItem2X, this.startItem2Y, 'spritesheet-key',  this.toolsArray[1]).setInteractive({ draggable: true }).setDepth(1)
+            this.tool2.startX = this.startItem2X
+            this.tool2.startY = this.startItem2Y
+            this.tool2.tool = 'bandage'
+
+            this.tool3 = this.items.create(this.startItem3X, this.startItem3Y, 'spritesheet-key',  this.toolsArray[2]).setInteractive({ draggable: true }).setDepth(1)
+            this.tool3.startX = this.startItem3X
+            this.tool3.startY = this.startItem3Y
+            this.tool3.tool = 'tweezers'
+
+        }  
+
+        dispenseDiagnosticTools()
+        {
+
+            this.icon1 = this.items.create(this.startItem1X, this.startItem1Y, 'spritesheet-key', this.iconArray[0]).setInteractive({ draggable: true }).setDepth(1)
+            this.icon1.startX = this.startItem1X
+            this.icon1.startY = this.startItem1Y
+            this.icon1.equipment = 'exam'
+
+            this.icon2 = this.items.create(this.startItem2X, this.startItem2Y, 'spritesheet-key',  this.iconArray[1]).setInteractive({ draggable: true }).setDepth(1)
+            this.icon2.startX = this.startItem2X
+            this.icon2.startY = this.startItem2Y
+            this.icon2.equipment = 'xray'
+
+            this.icon3 = this.items.create(this.startItem3X, this.startItem3Y, 'spritesheet-key',  this.iconArray[2]).setInteractive({ draggable: true }).setDepth(1)
+            this.icon3.startX = this.startItem3X
+            this.icon3.startY = this.startItem3Y
+            this.icon3.equipment = 'mag'
+
+
+        }
+
+        xrayAnimal(){
+            if(this.animal.beingXrayed == false){
+                this.animal.setTexture('spritesheet-diag', this.animalsXrayArray[this.animalNumber])
+                this.animal.beingXrayed = true
+            }
+
+        }
+
+        appearCircle(circle){
+
+            this.tweens.chain({
+                targets: [circle],
+                tweens: [
+                    {
+                        scale: 1,
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 100
+                    }
+
+                ]
+            })
+        }
+
+        appearHex(hex){
+
+            this.tweens.chain({
+                targets: [hex],
+                tweens: [
+                    {
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    },
+                    {
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 1000
+                    },
+                    {
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    }
+
+                ]
+            })
+        }
+
+        
+        appear(object){
+            this.tweens.chain({
+                targets: [object],
+                tweens: [
+                    {
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    },
+                    {
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    }
+
+                ]
+            })   
+        }
+
+        disappear(object){
+            this.sound.play('incorrect')
+            this.tweens.chain({
+                targets: [object],
+                tweens: [
+                    {
+                        scale: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    },
+                    {
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    }
+
+                ]
+            })   
+        }
+
+        resetafterIncorrect(gameObject){
+
+        // make circles disappear
+        this.removeCircles()
+
+        // after a short period, return the animal to its sad state 
+        this.time.delayedCall(2000, resetAnimal, [], this)
+        this.animal.setDepth(1)
+        function resetAnimal(){
+            this.animal.setTexture('spritesheet-key', this.animalsSadArray[this.animalNumber])
+            this.animal.setDepth(1)
+        }
+
+        this.time.delayedCall(2000, resetIcon, [], this)
+        function resetIcon(){
+
+            gameObject.setAlpha(1).setScale(1)
+            if(gameObject.equipment=='exam') {gameObject.setTexture('spritesheet-key', this.iconArray[0])}
+            if(gameObject.equipment=='xray') {gameObject.setTexture('spritesheet-key', this.iconArray[1])}
+            if(gameObject.equipment=='mag') {gameObject.setTexture('spritesheet-key', this.iconArray[2])}
+            if(gameObject.tool=='flea') {gameObject.setTexture('spritesheet-key', this.toolsArray[0])}
+            if(gameObject.tool=='bandage') {gameObject.setTexture('spritesheet-key', this.toolsArray[1])}
+            if(gameObject.tool=='tweezers') {gameObject.setTexture('spritesheet-key', this.toolsArray[2])}
+            this.tweens.add({
+                targets: gameObject,
+                props: {
+                    x: {value: gameObject.startX, duration: 0},
+                    y: { value: this.startItem1Y, duration: 0 },
+                },
+                ease: 'Sine.easeInOut',
+            })
+        }
+        }
+
+        disappearHex(hex){
+
+            this.tweens.chain({
+                targets: [hex],
+                tweens: [
+                    {
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    }
+
+                ]
+            })
+        }
+
+        disappearSoftly(circle){
+            this.tweens.chain({
+                targets: [circle],
+                tweens: [
+
+                    {
+                        scale: 0,
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400,
+                    }
+
+                ]
+            })
+        }
+
+        removeCircles(){
+            this.disappearSoftly(this.circle1)
+            this.disappearSoftly(this.circle2)
+            this.disappearSoftly(this.circle3)
+            this.disappearSoftly(this.circle4)
+            this.disappearSoftly(this.circleBigBandage)
+            this.disappearSoftly(this.circleBigFleas)
+            this.disappearSoftly(this.circleBigTweezers)
+        }
+
+
+        appearTick(tick){
+            this.tweens.chain({
+                targets: [tick],
+                tweens: [
+                    {
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 100
+                    },
+                    {
+
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 1000
+                    },
+                    {
+                        alpha: 0,
+                        ease: 'Sine.easeInOut',
+                        duration: 400
+                    }
+
+                ]
+            })
+        }
+
+        bandageAppear(){
+            this.tweens.chain({
+                targets: [this.bandage1],
+                tweens: [
+                    {
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 600
+                    }
+
+                ]
+            })
+        this.time.delayedCall(600, bandageNo2, [], this)
+        this.time.delayedCall(1200, bandageNo3, [], this)
+        function bandageNo2(){
+
+                this.tweens.chain({
+                    targets: [this.bandage2],
+                    tweens: [
+                        {
+                            alpha: 1,
+                            ease: 'Sine.easeInOut',
+                            duration: 600
+                        }
+    
+                    ]
+                })
+        }
+        function bandageNo3(){
+            this.tweens.chain({
+                targets: [this.bandage3],
+                tweens: [
+                    {
+                        alpha: 1,
+                        ease: 'Sine.easeInOut',
+                        duration: 600
+                    }
+
+                ]
+            })
+    }
+        }
+
+        
+
+        removeEquipment(){
+            this.icon1.destroy()
+            this.icon2.destroy()
+            this.icon3.destroy()
+        }
+
+        startHappyAnimal(){
+            this.background.setTexture('background')
+            this.animal.setTexture('spritesheet-key', this.animalsHappyArray[this.animalNumber]).setAlpha(1)
+            this.table.setAlpha(1)
+            this.vet.setAlpha(1)
+            this.bandage1.setAlpha(0)
+            this.bandage2.setAlpha(0)
+            this.bandage3.setAlpha(0)
+
+        }
+
+        startNextSublevel(){
+            // this.animal.setTexture('spritesheet-key', this.animalsHappyArray[this.animalNumber])
+            this.animalNumber++
+            console.log("here")
+            const cont = this.add.image(700, 450, 'continue').setInteractive().setDepth(3)
+                if(this.animalNumber == 3) {
+                    cont.once('pointerdown', () => {
+                        this.scene.start('intro-bonus')
+                
+                })
+                } else {
+                    cont.once('pointerdown', () => {
+                        this.scene.start('game', {
+                        level: this.animalNumber
+                    })
+                
+                })
+                }
+
+        }
+
+        handleDropZoneIncorrect(gameObject, x, y){
+            this.sound.play('incorrect')
+            if(gameObject.equipment=='exam' || gameObject.tool == 'bandage' || gameObject.tool == 'tweezers'  ){
+                this.appearTick(this.tick)
+                this.tweens.chain({
+                    targets: [gameObject],
+                    tweens: [
+                        {
+                            x: x-50,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+    
+                            x: x+50,
+                            ease: 'Sine.easeInOut',
+                            duration: 600
+                        },
+                        {
+                            x: x,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+
+                        {
+                            alpha: 0,
+                            ease: 'Sine.easeInOut',
+                            duration: 40
+                        },
+
+                        {
+                            y: gameObject.startY,
+                            x: gameObject.startX,
+                            ease: 'Sine.easeInOut',
+                            duration: 0
+                        },
+    
+                    ]
+                })
+            }
+
+            if(gameObject.equipment=='xray'){
+
+                console.log("animal xrayed")
+                //display an x-rayed animal
+                this.animal.setTexture('spritesheet-diag', this.animalsXrayArray[this.animalNumber])                    
+                gameObject.x = this.animalX
+                gameObject.y = this.animalY
+
+                this.appearTick(this.tick)
+               
+            }
+            if(gameObject.equipment=='mag'){
+
+                console.log("animal magnified")
+
+                this.appearTick(this.tick)
+               
+            }
+            if(gameObject.tool=='flea'){
+                const drop = this.add.image(gameObject.x-120, gameObject.y+200, 'spritesheet-diag', 'treatment_flea_drop.png').setAlpha(0).setDepth(2)
+                this.tweens.chain({
+                    targets: drop,
+                    tweens: [
+                        {
+                            alpha: 1,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+                            alpha: 1,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+                            y: gameObject.y+400,
+                            ease: 'Sine.easeInOut',
+                            duration: 1000
+                        },
+                        {
+                            alpha: 0,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                    ]
+                })
+            }
+
+        }
+
+        handleDropZoneCorrect(gameObject, x, y){
+            this.sound.play('correct')
+            this.vet.play(this.charanims[3], false)
+            if((this.animalState=='diagnosed')){this.removeInteractiveIcons()}
+            if((this.animalState=='treated')){this.removeInteractiveTools()}
+            this.removeCircles()
+            if(gameObject.equipment=='exam'){
+                this.animal.setTexture('spritesheet-key', this.animalsMediumArray[2])
+                this.tweens.chain({
+                    targets: [gameObject],
+                    tweens: [
+                        {
+                            x: 600,
+                            y: 550,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+    
+                            x: 650,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+    
+                            x: 550,
+                            ease: 'Sine.easeInOut',
+                            duration: 600
+                        },
+                        {
+                            x: 600,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+
+                        {
+                            alpha: 0,
+                            ease: 'Sine.easeInOut',
+                            duration: 40
+                        },
+
+                        {
+                            y: gameObject.startY,
+                            x: gameObject.startX,
+                            ease: 'Sine.easeInOut',
+                            duration: 0
+                        },
+    
+                    ]
+                })
+            }
+            if(gameObject.equipment=='xray'){
+                this.animal.setDepth(3).setTexture('spritesheet-diag', this.animalsXrayArray[this.animalNumber])                    //hold the xray screen up only if the target is hit
+                gameObject.x = this.animalX
+                gameObject.y = this.animalY
+                this.appearHex(this.hex2)
+            }
+            if(gameObject.equipment=='mag'){
+                gameObject.setScale(1)
+                gameObject.setTexture('spritesheet-diag2', this.animalsMagArray[this.animalNumber])
+                gameObject.x = this.animalX
+                gameObject.y = this.animalY
+                this.appearHex(this.hex1)
+            }
+            if(gameObject.tool=='flea'){
+                this.tweens.chain({
+                    targets: [gameObject],
+                    tweens: [
+                        {
+                            x: 930,
+                            y: 150,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                    ]
+                })
+                const drop = this.add.image(800, 380, 'spritesheet-diag', 'treatment_flea_drop.png').setAlpha(0)
+                this.tweens.chain({
+                    targets: drop,
+                    tweens: [
+                        {
+                            alpha: 1,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+                            alpha: 1,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+                            y: 500,
+                            ease: 'Sine.easeInOut',
+                            duration: 1000
+                        },
+                        {
+                            alpha: 0,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        }
+                    ]
+                })
+                this.removeCircles()
+                this.time.delayedCall(1500, removeGameObject, [], this)
+                function removeGameObject(){
+                    this.disappearSoftly(gameObject)
+                }
+                
+            }
+            if(gameObject.tool=='bandage'){
+                this.disappearSoftly(this.circleBigBandage)
+                this.bandageAppear()
+                gameObject.setTexture('spritesheet-diag', 'treatment_bandage_hand_02.png').setDepth(10)
+                this.tweens.chain({
+                    targets: [gameObject],
+                    tweens: [
+                        {
+                            x: 650,
+                            y: 450,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+    
+                            x: 750,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+                        {
+                            x: 550,
+                            ease: 'Sine.easeInOut',
+                            duration: 1000
+                        },
+                        {
+                            x: 650,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        },
+
+                        {
+                            alpha: 0,
+                            ease: 'Sine.easeInOut',
+                            duration: 40
+                        },
+                    ]
+                })
+            }
+            if(gameObject.tool=='tweezers'){
+                this.disappearSoftly(this.circleBigTweezers)
+                this.tweens.chain({
+                    targets: [gameObject],
+                    tweens: [
+                        {
+                            x: 600,
+                            y: 240,
+                            ease: 'Sine.easeInOut',
+                            duration: 400
+                        }
+                    ]
+                })
+                this.time.delayedCall(1000, removeTreatment, [], this)
+                function removeTreatment(){
+                    this.disappearSoftly(gameObject)
+                    this.disappearSoftly(this.thorn)
+                }
+            }
+        }
+
+        moveToNextAnimalState(){
+            if(this.animalState=='justArrived'){
+                
+                // mark animal as diagnosed
+                this.animalState ='diagnosed'
+
+                // display the tools needed for treatment 
+                this.time.delayedCall(4000, this.dispenseTools, [], this)
+                
+
+            } else if (this.animalState=='diagnosed'){
+                this.animalState ='treated'
+                this.time.delayedCall(1000, happyAnimal, [], this)
+                function happyAnimal(){
+                    this.animal.setTexture('spritesheet-key',this.animalsHappyArray[this.animalNumber]).setDepth(1)
+
+                }
+               
+
+                this.time.delayedCall(3000, this.startHappyAnimal, [], this)
+
+                this.time.delayedCall(5000, this.startNextSublevel, [], this)
+
+            } 
+        }
+
+        removeInteractiveIcons(){
+
+            this.icon1.disableInteractive()
+            this.icon2.disableInteractive()
+            this.icon3.disableInteractive()
+        }
+        removeInteractiveTools(){
+            this.tool1.disableInteractive()
+            this.tool2.disableInteractive()
+            this.tool3.disableInteractive()
+        }
+
+        setCircleDropZones(){
+            this.dropZoneCircle1 = new Phaser.Geom.Rectangle(
+                this.circle1.x - this.circle1.displayWidth / 2,
+                this.circle1.y - this.circle1.displayHeight / 2,
+                this.circle1.displayWidth,
+                this.circle1.displayHeight
+                )
+    
+            this.dropZoneCircle2 = new Phaser.Geom.Rectangle(
+                this.circle2.x - this.circle2.displayWidth / 2,
+                this.circle2.y - this.circle2.displayHeight / 2,
+                this.circle2.displayWidth,
+                this.circle2.displayHeight
+                )
+            this.dropZoneCircle3 = new Phaser.Geom.Rectangle(
+                this.circle3.x - this.circle3.displayWidth / 2,
+                this.circle3.y - this.circle3.displayHeight / 2,
+                this.circle3.displayWidth,
+                this.circle3.displayHeight
+                )
+            this.dropZoneCircle4 = new Phaser.Geom.Rectangle(
+                this.circle4.x - this.circle4.displayWidth / 2,
+                this.circle4.y - this.circle4.displayHeight / 2,
+                this.circle4.displayWidth,
+                this.circle4.displayHeight
+                )
+        }
 }

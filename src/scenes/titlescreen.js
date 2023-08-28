@@ -1,5 +1,4 @@
 import Phaser from '../lib/phaser.js'
-import eventsCenter from './eventscentre.js'
 
 export default class Title extends Phaser.Scene
 
@@ -14,11 +13,38 @@ super('title')
 preload()
 {
 
-    this.scene.run('ui-scene')
-    this.scene.run('music')
+    this.load.atlas(
+        'spritesheet-key',
+        './src/assets/level_01/spritesheet_vet_key_assets.png',
+        './src/assets/level_01/spritesheet_vet_key_assets.json'
+      )
+
+      this.load.atlas(
+        'spritesheet-diag',
+        './src/assets/level_01/spritesheet_vet_diag_treat.png',
+        './src/assets/level_01/spritesheet_vet_diag_treat.json'
+      )
+
+      this.load.atlas(
+        'spritesheet-diag2',
+        './src/assets/level_01/spritesheet_vet_diag_treat_big.png',
+        './src/assets/level_01/spritesheet_vet_diag_treat_big.json'
+      )
+
+      this.load.atlas(
+        'spritesheet_bonus',
+        './src/assets/bonus/spritesheet_vet_bonus.png',
+        './src/assets/bonus/spritesheet_vet_bonus.json'
+      )
+
     
     this.load.image('play', './src/assets/Buttons/play_big_idle.png')
-    this.load.image('background', './src/assets/Game/background.png')
+    this.load.image('background', './src/assets/level_01/00_key_assets/bg_01.png')
+    this.load.image('backgroundBonus', './src/assets/bonus/bg.png')
+    
+    this.load.image('dogzoom', './src/assets/level_01/02_treatment/bg_dog_zoom.png')
+    this.load.image('catzoom', './src/assets/level_01/02_treatment/bg_cat_zoom.png')
+    this.load.image('rabbitzoom', './src/assets/level_01/02_treatment/bg_rabbit_zoom.png')
 
     this.load.image('target', './src/assets/temp/hitzone.png')
     this.load.image('handHelper', './src/assets/onboarding/onboarding_hand.png')
@@ -31,7 +57,8 @@ preload()
     this.load.audio('incorrect', './src/assets/Sounds/cartoonbubblepop.mp3')
     
     this.load.spine("pw","./src/assets/char/char_pw.json","./src/assets/char/char_pw.atlas")
-    
+    this.load.spine("vet","./src/assets/level_01/vet/char_vt.json","./src/assets/level_01/vet/char_vt.atlas")
+
     this.load.image('continue', './src/assets/Buttons/continue.png')
     this.load.image('close', './src/assets/Buttons/close.png')
 
@@ -108,30 +135,28 @@ create()
 
     
 
-    const width = this.scale.width
-    const height = this.scale.height
+    // const width = this.scale.width
+    // const height = this.scale.height
 
-    this.add.image(700, 450, 'background');
+    // this.add.image(700, 450, 'background');
 
-    this.add.text(width * 0.5, height * 0.3, 'VET', {
-    fontSize: 48}).setOrigin(0.5)
+    // this.add.text(width * 0.5, height * 0.3, 'VET', {
+    // fontSize: 48}).setOrigin(0.5)
 
-    this.start = this.add.image(width * 0.5, height * 0.7, 'play').setScale(1.5).setInteractive()
+    // this.start = this.add.image(width * 0.5, height * 0.7, 'play').setScale(1.5).setInteractive()
     
-    this.start.once('pointerdown', () => {
-        this.scene.stop()
+    // this.start.once('pointerdown', () => {
+    //     this.scene.stop()
 
-        this.scene.start('level1', {
+        this.scene.start('game', {
             level: 0,
             firstLevel: true
         })
 
-        // this.scene.start('bonus', {
+        // this.scene.start('bonus')
 
-        // })
-
-        }
-        )
+        // }
+        // )
 
 }
 
